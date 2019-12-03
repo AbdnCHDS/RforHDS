@@ -12,7 +12,7 @@ Based on online material from Amy Willis, Kiirsti Owen and Amelia McNamara, and 
 2. transform and summarise data
 3. make plots  
 
-The R script used during the workshop is R_tidyverse_workshop.R. An R Markdown version is provided as well (R_tidyverse_workshop.Rmd) for participants who are more advanced R users.
+The R script used during the workshop is [R_tidyverse_workshop.R](https://github.com/AbdnCHDS/RforHDS/blob/master/Intro_R_Tidyverse/R_tidyverse_workshop.R). An R Markdown version is provided as well ([R_tidyverse_workshop.Rmd](https://github.com/AbdnCHDS/RforHDS/blob/master/Intro_R_Tidyverse/R_tidyverse_workshop.Rmd)) for participants who are more advanced R users.
 
 For the hands-on exercises, we use blue and yellow sticky notes given to the participants to make it easy to see who needs help, and when to move on:
 
