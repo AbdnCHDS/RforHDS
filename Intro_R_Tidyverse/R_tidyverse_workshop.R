@@ -1,6 +1,6 @@
 ########## Introduction to R and the Tidyverse ##########
 
-# Dimitra Blana, Dec 2019
+# Dimitra Blana and Jess Butler, Dec 2019
 
 # Based on online material from Amy Willis, Kiirsti Owen and Amelia McNamara, 
 # and the book "R for Data Science" by Hadley Wickham and Garrett Grolemund
