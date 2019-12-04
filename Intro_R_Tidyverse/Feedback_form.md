@@ -8,7 +8,8 @@ We want to hear your feedback so we can keep improving our content. Please fill 
 
 1. How happy were you with the workshop? (required) 1-5 (Not very  - Very much)
 2. How relevant and helpful do you think it was for you? (required) 1-5 (Not very - Very much)
-3. How satisfied were you with how the topics were presented? (required) Not satisfied / Satisfied / Very satisfied
+3. What did you think of the pace of the workshop? (required) Too slow / Just right / Too fast
+4. How satisfied were you with how the topics were presented? (required) Not satisfied / Satisfied / Very satisfied
 Topics:
 
 - Basic R (objects, functions)
@@ -16,6 +17,6 @@ Topics:
 - Operating on data
 - Plotting data
 
-4. How could we improve the workshop content?
-5. What topics (related to open and reproducible research) would interest you for future workshops?
-6. Any other comments?
+5. How could we improve the workshop content and delivery?
+6. What topics (related to open and reproducible research) would interest you for future workshops?
+7. Any other comments?
