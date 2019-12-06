@@ -18,5 +18,6 @@ Topics:
 - Plotting data
 
 5. How could we improve the workshop content and delivery?
-6. What topics (related to open and reproducible research) would interest you for future workshops?
-7. Any other comments?
+6. What can we do to further support your R journey?
+7. What topics (related to open and reproducible research) would interest you for future workshops?
+8. Any other comments?
