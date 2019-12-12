@@ -77,10 +77,21 @@ x+y
 install.packages("tidyverse")
 library(tidyverse)
 
+# When you load the tidyverse, you'll see a message about conflicts.
+# As there is an (increasingly) large number of packages in R, 
+# it is possible to have functions with the same name in more than one package.
+# The message tells you that packages dplyr and stats both have a function called filter
+# and the one that will be used is the one from dplyr. It is the one that was loaded last.
+# If you want to use a function from a particular package, you need to include packagename:: before the name of the function.
+# In this example, you can use stats::filter() instead of just filter() to use filter from the stats package.
+
+find("filter") # this shows you the packages a function belongs to, in order of priority
+
+
+
 # The tidyverse packages we will be using mostly in this workshop are readr (for reading in data), 
 # dplyr (for transforming data) and ggplot2 (for plotting)
 # There are many more you can explore later (the book "R for Data Science" mentioned at the top is a good resource).
-
 
 
 ##### Functions
@@ -92,9 +103,10 @@ sqrt(4) # base R
 4 %>%
   sqrt  # "pipe" operator (you can read is as "and then...")
 
+# Tip: use the R Studio shortcut Ctrl + Sft + M to create the pipe operator %>%
+
 # Tip: If you are not sure what a function does, type ?functionname in the Console:
 ?sqrt
-
 
 ##### Working directory
 
@@ -170,7 +182,7 @@ sd(fev_data$fev)
 
 fev_data$fev[32] # 32nd element of the fev column
 
-fev_data[32,3] # 32nd element of the 3rd column
+fev_data[32,3] # 32nd row, 3rd column
 
 fev_data[32,"age"]  # Same thing, but using the name of the 3rd column - better, as it is more readable and robust
 
@@ -182,7 +194,7 @@ fev_data[32,-5]
 
 fev_data[32,-1:-2]
 
-fev_data[32,c(1,3,5)] #c(1,3,5) is a vector of numbers
+fev_data[32,c(1,3,5)] #c(1,3,5) is a vector of numbers (c means "combine")
 
 c(1,3,5) %>%
   length
@@ -204,7 +216,7 @@ is_tall <- fev_data$height > 72
 table(is_tall)
 
 # Which subjects in fev_data are tall?
-fev_data[is_tall,]
+fev_data[is_tall, ]
 
 
 
@@ -228,13 +240,18 @@ fev_data %>%
   filter(is.na(age))  # opposite: !is.na(age)
 
 
+# You can combine multiple expressions with Boolean operators: & is "and", | is "or", and ! is "not"
+
+fev_data %>%
+  filter(age == 14 & smoke !=0)   # age is 14 and smoker
+
+fev_data %>%
+  filter(age < 5 | height < 50)  # either younger than 5 or shorter than 50 cm
+
+
 # Rules for filtering for categorical data:
 # sex == "F" or sex != "F"
 # sex %in% c("M","F")
-
-
-fev_data %>%
-  filter(age == 14, smoke !=0)
 
 
 
@@ -252,18 +269,18 @@ fev_data %>%
 ##### Summarising data
 
 fev_data %>%
-  filter(age == 14, smoke != 0) %>%
+  filter(age == 14 & smoke != 0) %>%
   summarise(mean(fev))
 
 # You can name the summary variable:
 
 fev_data %>%
-  filter(age == 14, smoke != 0) %>%
+  filter(age == 14 & smoke != 0) %>%
   summarise(my_mean = mean(fev))
 
 
 fev_data %>%
-  filter(age == 14, smoke != 0) %>%
+  filter(age == 14 & smoke != 0) %>%
   summarise(mean(fev), sd(fev))
 
 
@@ -312,6 +329,10 @@ fev_data$age %>% sort
 # To sort unique values in a column:
 fev_data$age %>% unique %>% sort
 
+# table() gives you a count of a particular factor or combination of factor levels:
+table(fev_data$age)
+table(fev_data$age,fev_data$smoke)
+
 
 # --> Problem 1: Which subjects are male and which are female? (i.e. what does sex == 1 mean?)
 
@@ -319,15 +340,9 @@ fev_data$age %>% unique %>% sort
 
 
 
-
-
-
 # --> Problem 2: Why do smokers appear to have better lung function (higher forced expiratory volume - FEV)?
 
 # <Insert your code here!>
-
-
-
 
 
 
@@ -377,11 +392,12 @@ fev_data %>%
   ggtitle("Distribution of FEV")
 
 
-# We can change the colour of the points (col), the shape of the points (pch) and the size (cex):
+# We can change the colour of the points (colour - but you can also use col or color), 
+# the shape of the points (shape) and the size in mm (size):
 
 fev_data %>%
   ggplot(aes(x = age, y = fev)) +
-  geom_point(cex = 0.5, pch = 18, col = "blue")  # Half as small, filled diamonds, blue
+  geom_point(size = 0.5, shape = 18, colour = "blue")  # Shape 18 is filled diamond
 
 # Tip: Find out more about ggplot's aesthetic specifications here: 
 # https://cran.r-project.org/web/packages/ggplot2/vignettes/ggplot2-specs.html
@@ -393,7 +409,7 @@ fev_data %>%
   mutate(sex = as.character(sex),
          smoke = as.character(smoke)) %>% # change sex and smoke from continuous to categorical variables
   ggplot(aes(x = age, y = fev)) +
-  geom_point(aes(col = sex, pch = smoke))
+  geom_point(aes(colour = sex, size = smoke))
 
 
 # Add a smooth line fitted to the data:
@@ -402,7 +418,7 @@ fev_data %>%
   mutate(sex = as.character(sex),
          smoke = as.character(smoke)) %>%
   ggplot(aes(x = age, y = fev)) +
-  geom_point(aes(col = sex, pch = smoke)) +
+  geom_point(aes(colour = sex, size = smoke)) +
   geom_smooth()
 
 # One smooth line per sex:
@@ -411,8 +427,8 @@ fev_data %>%
   mutate(sex = as.character(sex),
          smoke = as.character(smoke)) %>%
   ggplot(aes(x = age, y = fev)) +
-  geom_point(aes(col = sex, pch = smoke)) +
-  geom_smooth(aes(col=sex))
+  geom_point(aes(colour = sex, size = smoke)) +
+  geom_smooth(aes(colour=sex))
 
 # One smooth line per sex or smoking status:
 
@@ -420,15 +436,15 @@ fev_data %>%
   mutate(sex = as.character(sex),
          smoke = as.character(smoke)) %>%
   ggplot(aes(x = age, y = fev)) +
-  geom_point(aes(col = sex, pch = smoke)) +
-  geom_smooth(aes(col=sex, pch = smoke))
+  geom_point(aes(colour = sex, size = smoke)) +
+  geom_smooth(aes(colour=sex, size = smoke))
 
 # or:
 
 fev_data %>%
   mutate(sex = as.character(sex),
          smoke = as.character(smoke)) %>%
-  ggplot(aes(x = age, y = fev, col = sex, pch = smoke)) +
+  ggplot(aes(x = age, y = fev, colour = sex, size = smoke)) +
   geom_point() +
   geom_smooth()
 
@@ -438,13 +454,13 @@ fev_data %>%
 
 fev_average <- fev_data %>%
   group_by(age, smoke) %>%
-  summarise(fev_mean = mean(fev))
+  summarise(mean(fev))
 
 # This is not quite right:
 
 fev_average %>%
   ggplot(aes(x = age, y = fev_mean)) +
-  geom_line(aes(col = smoke))  # smoke is a continuous numeric variable!
+  geom_line(aes(colour = smoke))  # smoke is a continuous numeric variable!
 
 
 # This is better :)
@@ -452,7 +468,7 @@ fev_average %>%
 fev_average %>%
   mutate(smoke = as.character(smoke)) %>%
   ggplot(aes(x = age, y = fev_mean)) +
-  geom_line(aes(col = smoke))
+  geom_line(aes(colour = smoke))
 
 
 
@@ -495,7 +511,7 @@ fev_data %>%
   filter(age < 18 & age > 9) %>%
   mutate(smoke = as.character(smoke),
          age = as.character(age)) %>%
-  ggplot(aes(x = age, y = fev, col = smoke)) +
+  ggplot(aes(x = age, y = fev, colour = smoke)) +
   geom_boxplot() + 
   theme_bw()
 
